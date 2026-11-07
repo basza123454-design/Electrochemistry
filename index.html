@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ห้องทดลองไฟฟ้าเคมี | Electrochemistry Lab ม.5</title>
+<style>
+:root{--navy:#10243a;--blue:#1677c8;--cyan:#36c5d8;--gold:#f4b942;--ink:#203247;--muted:#65788b;--paper:#f4f8fc;--line:#dce6ef;--green:#1c9b76}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Tahoma,"Noto Sans Thai",sans-serif;line-height:1.6}
+header{background:linear-gradient(120deg,#10243a,#145a86 65%,#1b9eae);color:white;padding:28px 20px}.wrap{max-width:1120px;margin:auto;padding:0 18px}
+.eyebrow{letter-spacing:2px;font-size:12px;color:#b9e8f2;font-weight:bold}h1{margin:8px 0;font-size:clamp(27px,4vw,40px)}header p{margin:0;color:#e0f4fa}
+main{padding:24px 0 50px}.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.tab{border:1px solid var(--line);background:white;color:var(--navy);padding:10px 16px;border-radius:999px;cursor:pointer;font-weight:bold}.tab.active{background:var(--navy);color:white}
+.panel{display:none}.panel.active{display:block}.card{background:white;border:1px solid var(--line);border-radius:18px;padding:20px;margin-bottom:18px;box-shadow:0 8px 24px #18344d0a}.card h2,.card h3{margin-top:0;color:var(--navy)}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}.diagram{background:linear-gradient(#f7fbff,#edf5fa);border:1px solid var(--line);border-radius:14px;padding:10px}.diagram svg{width:100%;height:auto;display:block}
+.controls{display:grid;gap:13px}.control{padding:13px;background:#f7fafc;border-radius:12px}.control label{display:flex;justify-content:space-between;gap:12px;font-weight:bold}.control input{width:100%;accent-color:var(--blue);margin-top:9px}.control select{width:100%;padding:10px;border:1px solid #cbd9e5;border-radius:9px;background:white;margin-top:8px;color:var(--ink)}
+.value{color:var(--blue);font-variant-numeric:tabular-nums}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}.metric{background:#f0f7fc;border-radius:12px;padding:12px;text-align:center}.metric strong{display:block;font-size:23px;color:var(--blue)}.metric small,.readout{color:var(--muted);font-size:13px}
+.note{border-left:4px solid var(--gold);padding:10px 13px;background:#fff9e9;border-radius:8px}.equation{font-size:18px;text-align:center;background:#10243a;color:white;border-radius:12px;padding:13px;margin:12px 0}
+.legend{display:flex;gap:15px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:8px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px}
+.chartbox{height:270px;position:relative}.chartbox canvas{width:100%;height:100%}button.action{background:var(--blue);border:0;color:white;padding:10px 16px;border-radius:10px;font-weight:bold;cursor:pointer}button.action:hover{filter:brightness(.94)}
+.question{border:1px solid var(--line);border-radius:13px;padding:15px;margin:13px 0}.question p{font-weight:bold;margin:0 0 10px}.question label{display:block;padding:5px 0;cursor:pointer}.feedback{font-weight:bold;margin-top:8px}.correct{color:var(--green)}.wrong{color:#c34b48}.answer-key{display:none;background:#eef8f4;border-radius:12px;padding:14px;margin-top:14px}.answer-key.show{display:block}
+table{border-collapse:collapse;width:100%;font-size:14px}th,td{padding:9px;border-bottom:1px solid var(--line);text-align:left}th{background:#f0f6fa;color:var(--navy)}footer{text-align:center;color:var(--muted);font-size:12px;padding:15px}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(130px)}}.electron{animation:drift 2.2s linear infinite}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.card{padding:15px}.diagram{overflow:hidden}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><div class="eyebrow">INTERACTIVE SCIENCE • มัธยมศึกษาปีที่ 5</div><h1>ห้องทดลองไฟฟ้าเคมี</h1><p>เลือกคู่โลหะ ทดลองเซลล์กัลวานิก สังเกตการถ่ายโอนอิเล็กตรอน และวิเคราะห์ศักย์ไฟฟ้าแบบเรียลไทม์</p></div></header>
+<main class="wrap">
+<div class="tabs"><button class="tab active" data-tab="lab">🔬 ห้องทดลองจำลอง</button><button class="tab" data-tab="theory">📘 แนวคิดสำคัญ</button><button class="tab" data-tab="metals">🧪 คลังโลหะ 15 ชนิด</button><button class="tab" data-tab="quiz">📝 แบบทดสอบ 10 ข้อ</button></div>
+<section id="lab" class="panel active">
+<div class="card"><h2>กิจกรรม: สร้างเซลล์กัลวานิกจากโลหะที่เลือก</h2><p>เลือกโลหะ 2 ชนิดจากรายการ ระบบจะเปรียบเทียบศักย์รีดักชันมาตรฐานและกำหนดแอโนด–แคโทดให้อัตโนมัติ จากนั้นปรับความเข้มข้นของไอออนเพื่อดูผลต่อศักย์เซลล์</p>
+<div class="grid"><div>
+<div class="diagram"><svg viewBox="0 0 620 330" role="img" aria-label="แผนภาพเซลล์กัลวานิก">
+<defs><linearGradient id="sol1" x2="0" y2="1"><stop stop-color="#b9d8ed"/><stop offset="1" stop-color="#76afd4"/></linearGradient><linearGradient id="sol2" x2="0" y2="1"><stop stop-color="#b8e8df"/><stop offset="1" stop-color="#5bbba8"/></linearGradient></defs>
+<path d="M60 150 L60 278 Q60 294 78 294 H250 Q268 294 268 278 V150 M352 150 V278 Q352 294 370 294 H542 Q560 294 560 278 V150" fill="none" stroke="#6e879b" stroke-width="4"/>
+<path d="M64 190 H264 V278 Q264 290 250 290 H78 Q64 290 64 278Z" fill="url(#sol1)"/><path d="M356 190 H556 V278 Q556 290 542 290 H370 Q356 290 356 278Z" fill="url(#sol2)"/>
+<rect x="126" y="92" width="28" height="150" rx="3" fill="#9aa7b2" stroke="#586b7b" stroke-width="2"/><rect x="456" y="92" width="28" height="150" rx="3" fill="#d98b42" stroke="#a45b22" stroke-width="2"/>
+<path d="M140 92 V45 H470 V92" fill="none" stroke="#263f55" stroke-width="4"/><rect x="265" y="30" width="82" height="30" rx="7" fill="#fff" stroke="#263f55" stroke-width="2"/><text x="306" y="50" font-size="15" text-anchor="middle" fill="#203247">V มิเตอร์</text>
+<path d="M270 157 Q306 122 350 157" fill="none" stroke="#d1a64b" stroke-width="13" stroke-linecap="round"/><text x="310" y="143" text-anchor="middle" font-size="12" fill="#604b20">สะพานเกลือ</text>
+<g class="electron" fill="#f4b942"><circle cx="185" cy="45" r="6"/><circle cx="215" cy="45" r="6"/><circle cx="245" cy="45" r="6"/></g>
+<path d="M185 72 H425" stroke="#f0a91e" stroke-width="2.5" stroke-dasharray="6 6"/><path d="M416 66 L427 72 L416 78" fill="none" stroke="#f0a91e" stroke-width="2.5"/>
+<text id="electronLabel" x="305" y="88" text-anchor="middle" font-size="13" fill="#9a6b08">e⁻ ไหลจาก Zn ไป Cu</text>
+<text id="leftMetal" x="140" y="260" text-anchor="middle" font-size="16" font-weight="bold" fill="#253b4e">Zn(s)</text><text id="leftRole" x="140" y="316" text-anchor="middle" font-size="13" fill="#536b7e">แอโนด (−)</text>
+<text id="rightMetal" x="470" y="260" text-anchor="middle" font-size="16" font-weight="bold" fill="#714019">Cu(s)</text><text id="rightRole" x="470" y="316" text-anchor="middle" font-size="13" fill="#536b7e">แคโทด (+)</text>
+<text id="leftIon" x="165" y="211" font-size="13" fill="#234b69">Zn²⁺</text><text id="rightIon" x="430" y="213" font-size="13" fill="#176e60">Cu²⁺</text>
+<text id="leftSol" x="165" y="178" font-size="12" fill="#31556f">สารละลาย Zn²⁺</text><text id="rightSol" x="435" y="178" font-size="12" fill="#176e60">สารละลาย Cu²⁺</text>
+</svg><div class="legend"><span><i class="dot" style="background:#9aa7b2"></i>ขั้วโลหะที่เกิดออกซิเดชัน</span><span><i class="dot" style="background:#d98b42"></i>ขั้วโลหะที่เกิดรีดักชัน</span><span><i class="dot" style="background:#f4b942"></i>อิเล็กตรอน</span></div></div>
+<div class="metrics"><div class="metric"><strong id="voltage">1.10 V</strong><small>ศักย์เซลล์ (E)</small></div><div class="metric"><strong id="ratio">1.00</strong><small>อัตราส่วนไอออน Q</small></div><div class="metric"><strong id="direction">Zn → Cu</strong><small>ทิศทาง e⁻</small></div></div>
+</div>
+<div class="controls">
+<div class="control"><label for="metalA">โลหะที่เลือกตัวที่ 1</label><select id="metalA"></select></div>
+<div class="control"><label for="metalB">โลหะที่เลือกตัวที่ 2</label><select id="metalB"></select></div>
+<div class="note" id="potentialInfo">เลือกโลหะสองชนิดที่แตกต่างกันเพื่อเริ่มทดลอง</div>
+<div class="control"><label for="anodeConc">ความเข้มข้นไอออนของแอโนด <span class="value" id="anodeVal">1.00 M</span></label><input id="anodeConc" type="range" min="-2" max=".3" step=".01" value="0"></div>
+<div class="control"><label for="cathodeConc">ความเข้มข้นไอออนของแคโทด <span class="value" id="cathodeVal">1.00 M</span></label><input id="cathodeConc" type="range" min="-2" max=".3" step=".01" value="0"></div>
+<button class="action" id="reset">↺ คืนค่าเริ่มต้น Zn–Cu</button>
+</div></div></div>
+<div class="card"><h3>กราฟศักย์เซลล์แบบเรียลไทม์</h3><p class="readout">กราฟแสดงความสัมพันธ์ระหว่างอัตราส่วนความเข้มข้นไอออน Q กับศักย์เซลล์ จุดสีทองแสดงค่าปัจจุบัน</p><div class="chartbox"><canvas id="chart" width="900" height="300"></canvas></div><div class="equation" id="equation">Ecell = E°cell − (0.0592 / n) log Q</div><p class="readout">คำนวณที่ 25 °C โดยใช้สมการเนิร์นสต์ และสมมติว่าสารละลายมีพฤติกรรมใกล้เคียงอุดมคติ</p></div>
+<div class="note">หมายเหตุ: เป็นการทดลองจำลองเพื่อการเรียนรู้เท่านั้น โลหะและสารละลายบางชนิดมีอันตราย ไม่ควรนำไปทดลองจริงโดยไม่มีครูควบคุมและการประเมินความปลอดภัย</div>
+</section>
+<section id="theory" class="panel"><div class="card"><h2>แนวคิดสำคัญ: เซลล์กัลวานิก</h2><p>เซลล์กัลวานิกเปลี่ยนพลังงานเคมีจากปฏิกิริยารีดอกซ์ที่เกิดขึ้นเองให้เป็นพลังงานไฟฟ้า โดยมีครึ่งเซลล์ 2 ส่วนเชื่อมต่อกันด้วยวงจรภายนอกและสะพานเกลือ</p><div class="equation">E°cell = E°red (แคโทด) − E°red (แอโนด)</div><ul><li><b>แอโนด (Anode):</b> เกิดออกซิเดชัน โลหะเสียอิเล็กตรอน</li><li><b>แคโทด (Cathode):</b> เกิดรีดักชัน ไอออนรับอิเล็กตรอน</li><li><b>อิเล็กตรอน:</b> ไหลในวงจรภายนอกจากแอโนดไปแคโทด</li><li><b>สะพานเกลือ:</b> ช่วยรักษาสมดุลประจุของสารละลาย</li></ul><div class="note"><b>จำง่าย:</b> AnOx = Anode เกิด Oxidation และ RedCat = Reduction เกิดที่ Cathode</div></div><div class="card"><h3>แนวทางการทดลอง</h3><ol><li>เลือกโลหะ 2 ชนิดที่แตกต่างกัน</li><li>สังเกตค่า E°cell และระบุแอโนดกับแคโทด</li><li>ปรับความเข้มข้นไอออนทีละตัว แล้วสังเกตกราฟ</li><li>อธิบายผลโดยใช้สมการเนิร์นสต์และหลักการรีดอกซ์</li></ol></div></section>
+<section id="metals" class="panel"><div class="card"><h2>คลังโลหะ 15 ชนิด</h2><p>เลือกโลหะจากตารางนี้ไปประกอบเป็นเซลล์กัลวานิกได้ โดยค่าศักย์รีดักชันมาตรฐานเป็นค่าโดยประมาณเทียบกับ SHE</p><div style="overflow-x:auto"><table><thead><tr><th>โลหะ</th><th>ครึ่งปฏิกิริยารีดักชัน</th><th>E°red (V)</th></tr></thead><tbody id="metalTable"></tbody></table></div></div></section>
+<section id="quiz" class="panel"><div class="card"><h2>คำถามท้ายกิจกรรม 10 ข้อ</h2><p>เลือกคำตอบที่ถูกต้อง แล้วกดตรวจคำตอบเพื่อดูคะแนนและคำอธิบาย</p><form id="quizForm">
+<div class="question"><p>1) เซลล์กัลวานิกเปลี่ยนพลังงานรูปใดเป็นพลังงานไฟฟ้า</p><label><input type="radio" name="q1" value="a"> ก. พลังงานแสง</label><label><input type="radio" name="q1" value="b"> ข. พลังงานเคมี</label><label><input type="radio" name="q1" value="c"> ค. พลังงานเสียง</label></div>
+<div class="question"><p>2) ปฏิกิริยาออกซิเดชันเกิดขึ้นที่ขั้วใด</p><label><input type="radio" name="q2" value="a"> ก. แอโนด</label><label><input type="radio" name="q2" value="b"> ข. แคโทด</label><label><input type="radio" name="q2" value="c"> ค. สะพานเกลือ</label></div>
+<div class="question"><p>3) อิเล็กตรอนในวงจรภายนอกไหลจากขั้วใดไปขั้วใด</p><label><input type="radio" name="q3" value="a"> ก. แคโทดไปแอโนด</label><label><input type="radio" name="q3" value="b"> ข. สะพานเกลือไปแอโนด</label><label><input type="radio" name="q3" value="c"> ค. แอโนดไปแคโทด</label></div>
+<div class="question"><p>4) หน้าที่สำคัญของสะพานเกลือคือข้อใด</p><label><input type="radio" name="q4" value="a"> ก. เพิ่มอุณหภูมิ</label><label><input type="radio" name="q4" value="b"> ข. รักษาสมดุลประจุในสารละลาย</label><label><input type="radio" name="q4" value="c"> ค. หยุดการไหลของอิเล็กตรอน</label></div>
+<div class="question"><p>5) ในเซลล์ Zn–Cu โลหะใดเป็นแอโนด</p><label><input type="radio" name="q5" value="a"> ก. Cu</label><label><input type="radio" name="q5" value="b"> ข. Zn</label><label><input type="radio" name="q5" value="c"> ค. ทั้งสองเป็นแคโทด</label></div>
+<div class="question"><p>6) ในเซลล์ Zn–Cu ไอออนใดเกิดรีดักชัน</p><label><input type="radio" name="q6" value="a"> ก. Zn²⁺</label><label><input type="radio" name="q6" value="b"> ข. SO₄²⁻</label><label><input type="radio" name="q6" value="c"> ค. Cu²⁺</label></div>
+<div class="question"><p>7) ถ้า E°red ของแคโทดสูงกว่า E°red ของแอโนด ค่า E°cell จะเป็นอย่างไร</p><label><input type="radio" name="q7" value="a"> ก. เป็นบวก</label><label><input type="radio" name="q7" value="b"> ข. เป็นลบ</label><label><input type="radio" name="q7" value="c"> ค. เป็นศูนย์เสมอ</label></div>
+<div class="question"><p>8) เมื่อเพิ่มความเข้มข้น Cu²⁺ ในเซลล์ Zn–Cu โดยคง [Zn²⁺] เดิม ค่า Ecell จะเป็นอย่างไร</p><label><input type="radio" name="q8" value="a"> ก. ลดลง</label><label><input type="radio" name="q8" value="b"> ข. เพิ่มขึ้น</label><label><input type="radio" name="q8" value="c"> ค. ไม่เปลี่ยน</label></div>
+<div class="question"><p>9) สมการใดใช้คำนวณศักย์เซลล์ภายใต้สภาวะไม่มาตรฐาน</p><label><input type="radio" name="q9" value="a"> ก. กฎของบอยล์</label><label><input type="radio" name="q9" value="b"> ข. สมการแก๊สอุดมคติ</label><label><input type="radio" name="q9" value="c"> ค. สมการเนิร์นสต์</label></div>
+<div class="question"><p>10) หากเลือกโลหะ 2 ชนิดที่มี E°red ต่างกันมาก (โดยให้ทิศทางเกิดเอง) โดยทั่วไปจะได้ค่า E°cell อย่างไร</p><label><input type="radio" name="q10" value="a"> ก. มีแนวโน้มสูงขึ้น</label><label><input type="radio" name="q10" value="b"> ข. ต้องเป็นศูนย์</label><label><input type="radio" name="q10" value="c"> ค. ต้องเป็นลบ</label></div>
+<button class="action" type="submit">ตรวจคำตอบ</button> <button class="action" type="button" id="showAnswers" style="background:#52697d">ดูเฉลยพร้อมเหตุผล</button><div id="score" class="feedback" aria-live="polite"></div>
+<div class="answer-key" id="answerKey"><b>เฉลยพร้อมเหตุผล</b><ol><li><b>ข.</b> เซลล์กัลวานิกเปลี่ยนพลังงานเคมีจากปฏิกิริยารีดอกซ์เป็นพลังงานไฟฟ้า</li><li><b>ก.</b> แอโนดเป็นตำแหน่งที่เกิดออกซิเดชัน</li><li><b>ค.</b> อิเล็กตรอนไหลจากแอโนดไปแคโทดผ่านสายไฟ</li><li><b>ข.</b> สะพานเกลือช่วยรักษาสมดุลประจุโดยให้ไอออนเคลื่อนที่</li><li><b>ข.</b> Zn มีแนวโน้มเสียอิเล็กตรอน จึงเป็นแอโนด</li><li><b>ค.</b> Cu²⁺ รับอิเล็กตรอนกลายเป็น Cu</li><li><b>ก.</b> E°cell = E°red(แคโทด) − E°red(แอโนด) จึงเป็นบวก</li><li><b>ข.</b> เพิ่ม Cu²⁺ ทำให้ Q ลดลงและ Ecell เพิ่มขึ้น</li><li><b>ค.</b> สมการเนิร์นสต์ใช้หาศักย์ไฟฟ้าเมื่อไม่อยู่ในสภาวะมาตรฐาน</li><li><b>ก.</b> ผลต่างศักย์รีดักชันมากขึ้นทำให้ E°cell มีแนวโน้มสูงขึ้น</li></ol></div></form></div></section>
+</main><footer>สื่อการเรียนรู้แบบโต้ตอบ เรื่องไฟฟ้าเคมี • ระดับชั้นมัธยมศึกษาปีที่ 5</footer>
+<script>
+const metals=[
+{key:'Mg',name:'แมกนีเซียม',ion:'Mg²⁺',charge:2,E:-2.37},
+{key:'Al',name:'อะลูมิเนียม',ion:'Al³⁺',charge:3,E:-1.66},
+{key:'Mn',name:'แมงกานีส',ion:'Mn²⁺',charge:2,E:-1.18},
+{key:'Cr',name:'โครเมียม',ion:'Cr³⁺',charge:3,E:-0.74},
+{key:'Zn',name:'สังกะสี',ion:'Zn²⁺',charge:2,E:-0.76},
+{key:'Fe',name:'เหล็ก',ion:'Fe²⁺',charge:2,E:-0.44},
+{key:'Cd',name:'แคดเมียม',ion:'Cd²⁺',charge:2,E:-0.40},
+{key:'Co',name:'โคบอลต์',ion:'Co²⁺',charge:2,E:-0.28},
+{key:'Ni',name:'นิกเกิล',ion:'Ni²⁺',charge:2,E:-0.25},
+{key:'Sn',name:'ดีบุก',ion:'Sn²⁺',charge:2,E:-0.14},
+{key:'Pb',name:'ตะกั่ว',ion:'Pb²⁺',charge:2,E:-0.13},
+{key:'Cu',name:'ทองแดง',ion:'Cu²⁺',charge:2,E:0.34},
+{key:'Ag',name:'เงิน',ion:'Ag⁺',charge:1,E:0.80},
+{key:'Pt',name:'แพลทินัม',ion:'Pt²⁺',charge:2,E:1.20},
+{key:'Au',name:'ทองคำ',ion:'Au³⁺',charge:3,E:1.50}
+];
+const $=id=>document.getElementById(id),aSel=$('metalA'),bSel=$('metalB');
+function option(m){return `<option value="${m.key}">${m.key} — ${m.name} ( ${m.E.toFixed(2)} V )</option>`}
+metals.forEach(m=>{aSel.insertAdjacentHTML('beforeend',option(m));bSel.insertAdjacentHTML('beforeend',option(m))});
+aSel.value='Zn';bSel.value='Cu';
+$('metalTable').innerHTML=metals.map(m=>`<tr><td><b>${m.key}</b> (${m.name})</td><td>${m.key}ⁿ⁺ + ${m.charge}e⁻ → ${m.key}(s)</td><td>${m.E.toFixed(2)}</td></tr>`).join('');
+let anode,cathode,nElectrons,E0,Qnow;
+function gcd(a,b){return b?gcd(b,a%b):a}function lcm(a,b){return a*b/gcd(a,b)}
+function setupPair(){
+ const m1=metals.find(m=>m.key===aSel.value),m2=metals.find(m=>m.key===bSel.value);
+ if(m1.key===m2.key){$('potentialInfo').textContent='กรุณาเลือกโลหะ 2 ชนิดที่แตกต่างกัน';return false}
+ anode=m1.E<m2.E?m1:m2;cathode=m1.E<m2.E?m2:m1;
+ nElectrons=lcm(anode.charge,cathode.charge);
+ E0=cathode.E-anode.E;
+ $('leftMetal').textContent=anode.key+'(s)';$('rightMetal').textContent=cathode.key+'(s)';
+ $('leftRole').textContent='แอโนด (−)';$('rightRole').textContent='แคโทด (+)';
+ $('leftIon').textContent=anode.ion;$('rightIon').textContent=cathode.ion;
+ $('leftSol').textContent='สารละลาย '+anode.ion;$('rightSol').textContent='สารละลาย '+cathode.ion;
+ $('electronLabel').textContent='e⁻ ไหลจาก '+anode.key+' ไป '+cathode.key;
+ $('direction').textContent=anode.key+' → '+cathode.key;
+ $('potentialInfo').innerHTML=`<b>แอโนด:</b> ${anode.key} (${anode.E.toFixed(2)} V) &nbsp; <b>แคโทด:</b> ${cathode.key} (${cathode.E.toFixed(2)} V)<br><b>E°cell = ${E0.toFixed(2)} V</b> • แลกเปลี่ยนอิเล็กตรอน ${nElectrons} e⁻ ต่อสมการรวม`;
+ $('equation').textContent=`Ecell = ${E0.toFixed(2)} − (0.0592 / ${nElectrons}) log Q`;
+ update();return true;
+}
+function conc(el){return Math.pow(10,Number(el.value))}
+function update(){
+ if(!anode||!cathode)return;
+ const ca=conc($('anodeConc')),cc=conc($('cathodeConc'));
+ const Q=Math.pow(ca,nElectrons/anode.charge)/Math.pow(cc,nElectrons/cathode.charge);
+ const E=E0-(0.0592/nElectrons)*Math.log10(Q);Qnow=Q;
+ $('anodeVal').textContent=ca.toFixed(2)+' M';$('cathodeVal').textContent=cc.toFixed(2)+' M';
+ $('voltage').textContent=E.toFixed(3)+' V';$('ratio').textContent=Q.toExponential(2);
+ drawChart(Q,E);
+}
+function drawChart(qNow,eNow){
+ const c=$('chart'),ctx=c.getContext('2d'),w=c.width,h=c.height,p={l:70,r:25,t:18,b:48},xmin=.0001,xmax=10000;
+ const vals=Array.from({length:201},(_,i)=>E0-(.0592/nElectrons)*Math.log10(xmin*Math.pow(xmax/xmin,i/200)));
+ let ymin=Math.min(...vals,eNow)-.04,ymax=Math.max(...vals,eNow)+.04;if(ymax-ymin<.15){ymin-=.08;ymax+=.08}
+ const X=x=>p.l+(Math.log10(x)-Math.log10(xmin))/(Math.log10(xmax)-Math.log10(xmin))*(w-p.l-p.r),Y=y=>h-p.b-(y-ymin)/(ymax-ymin)*(h-p.t-p.b);
+ ctx.clearRect(0,0,w,h);ctx.font='13px Tahoma';ctx.strokeStyle='#dce6ef';ctx.fillStyle='#65788b';
+ for(let i=0;i<=4;i++){let y=ymin+(ymax-ymin)*i/4;ctx.beginPath();ctx.moveTo(p.l,Y(y));ctx.lineTo(w-p.r,Y(y));ctx.stroke();ctx.fillText(y.toFixed(2),10,Y(y)+4)}
+ [.0001,.01,1,100,10000].forEach(x=>{ctx.beginPath();ctx.moveTo(X(x),p.t);ctx.lineTo(X(x),h-p.b);ctx.stroke();ctx.fillText(x.toString(),X(x)-16,h-18)});
+ ctx.strokeStyle='#1677c8';ctx.lineWidth=3;ctx.beginPath();for(let i=0;i<=200;i++){let q=xmin*Math.pow(xmax,i/200),e=E0-(.0592/nElectrons)*Math.log10(q);i?ctx.lineTo(X(q),Y(e)):ctx.moveTo(X(q),Y(e))}ctx.stroke();
+ ctx.fillStyle='#203247';ctx.fillText('ค่า Q (สเกล log)',w/2-50,h-3);ctx.save();ctx.translate(17,h/2+35);ctx.rotate(-Math.PI/2);ctx.fillText('ศักย์เซลล์ (V)',0,0);ctx.restore();
+ if(qNow>=xmin&&qNow<=xmax){ctx.fillStyle='#e49b19';ctx.beginPath();ctx.arc(X(qNow),Y(eNow),7,0,Math.PI*2);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke()}
+}
+aSel.addEventListener('change',setupPair);bSel.addEventListener('change',setupPair);
+$('anodeConc').addEventListener('input',update);$('cathodeConc').addEventListener('input',update);
+$('reset').addEventListener('click',()=>{aSel.value='Zn';bSel.value='Cu';$('anodeConc').value=0;$('cathodeConc').value=0;setupPair()});
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('.panel').forEach(x=>x.classList.toggle('active',x.id===b.dataset.tab))}));
+const key={q1:'b',q2:'a',q3:'c',q4:'b',q5:'b',q6:'c',q7:'a',q8:'b',q9:'c',q10:'a'};
+const reasons=['เซลล์กัลวานิกเปลี่ยนพลังงานเคมีเป็นพลังงานไฟฟ้า','ออกซิเดชันเกิดที่แอโนด','อิเล็กตรอนไหลจากแอโนดไปแคโทด','สะพานเกลือช่วยรักษาสมดุลประจุ','Zn เสียอิเล็กตรอนจึงเป็นแอโนดในเซลล์ Zn–Cu','Cu²⁺ รับอิเล็กตรอนเกิดเป็น Cu','ผลต่างศักย์รีดักชันของแคโทดลบด้วยแอโนดเป็นค่าบวก','เพิ่ม Cu²⁺ ทำให้ Q ลดลงและ Ecell เพิ่มขึ้น','สมการเนิร์นสต์ใช้กับสภาวะไม่มาตรฐาน','ผลต่างศักย์รีดักชันที่มากขึ้นทำให้ศักย์เซลล์มีแนวโน้มสูงขึ้น'];
+$('quizForm').addEventListener('submit',e=>{e.preventDefault();let score=0;for(let i=1;i<=10;i++){let v=document.querySelector(`input[name="q${i}"]:checked`),ok=v&&v.value===key['q'+i];if(ok)score++;let old=document.getElementById('fb'+i);if(old)old.remove();let fb=document.createElement('div');fb.id='fb'+i;fb.className='feedback '+(ok?'correct':'wrong');fb.textContent=(ok?'✓ ถูกต้อง — ':'✗ ยังไม่ถูก — ')+reasons[i-1];document.querySelector(`input[name="q${i}"]`).closest('.question').appendChild(fb)}$('score').textContent=`คะแนนของคุณ ${score}/10 คะแนน`;});
+$('showAnswers').addEventListener('click',()=>$('answerKey').classList.toggle('show'));
+setupPair();
+</script></body></html>
